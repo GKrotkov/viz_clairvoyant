@@ -1,0 +1,130 @@
+---
+title: "Data Viz Exploration"
+author: 
+- "Gabriel Krotkov"
+- 'Style Guide: Modified Tidyverse Style Guide'
+date: "Due Thursday, Sept 28th, 2023 (11:59 PM EDT) on Gradescope"
+output:
+  pdf_document:
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+My variant of the Tidyverse style guide can be found [here](https://github.com/GKrotkov/gkrotkov_style_r/tree/main)
+
+```{r}
+library(tidyverse)
+library(hexbin)
+```
+
+# Data Loading
+
+```{r}
+# prepend the string prefix onto each of the items of the vector v, 
+# unless the item already starts with prefix
+prepend_unless <- function(v, prefix, sep = "_"){
+    idx <- !startsWith(v, prefix)
+    v[idx] <- paste(prefix, v[idx], sep = sep)
+    return(v)
+}
+
+linkedin <- read_csv("archive/job_postings.csv", 
+                     show_col_types = FALSE)
+companies <- read_csv("archive/company_details/companies.csv", 
+                     show_col_types = FALSE)
+colnames(companies) <- prepend_unless(colnames(companies), "company")
+industries <- read_csv("archive/company_details/company_industries.csv", 
+                     show_col_types = FALSE)
+employee_counts <- read_csv("archive/company_details/employee_counts.csv", 
+                     show_col_types = FALSE)
+
+linkedin <- merge(linkedin, companies, by = "company_id")
+linkedin <- merge(linkedin, industries, by = "company_id")
+
+top_ten <- table(linkedin$industry)[order(table(linkedin$industry), 
+                                          decreasing = TRUE)][1:10]
+```
+
+```{r}
+f500 <- read_tsv("fortune_500.txt", col_names = FALSE)
+colnames(f500) <- "company_name"
+f500 <- f500$company_name
+```
+
+we want to create a new dataframe with "company" as the rows:
+- need to be able to see pct of employees who are full time. 
+- avg, median, sd salary
+- employee headcount over time
+- headquarters country
+- company size
+
+# Script to generate the target dataframe
+
+todo list for linkedin data: 
+- formatted experience level
+
+Decided to discard some information from work_type - we don't care how many volunteer and internship roles they put up.
+
+How do I summarise a categorical variable? (like pay period, work type, etc.)
+
+```{r}
+# prepend the string prefix onto each of the items of the vector v, 
+# unless the item already starts with prefix
+prepend_unless <- function(v, prefix, sep = "_"){
+    idx <- !startsWith(v, prefix)
+    v[idx] <- paste(prefix, v[idx], sep = sep)
+    return(v)
+}
+
+linkedin <- read_csv("archive/job_postings.csv", 
+                     show_col_types = FALSE)
+cidx <- which(colnames(linkedin) == "formatted_experience_level")
+colnames(linkedin)[cidx] <- "experience"
+# compress linkedin data into company-level information
+linkedin <- linkedin %>%
+    group_by(company_id) %>%
+    summarise(n_postings = n(), 
+              mean_salary_max = round(mean(max_salary, na.rm = TRUE), 2), 
+              mean_salary_med = round(mean(med_salary, na.rm = TRUE), 2), 
+              mean_salary_min = round(mean(min_salary, na.rm = TRUE), 2), 
+              yearly_pct = round(sum(pay_period == "YEARLY") / n(), 2), 
+              monthly_pct = round(sum(pay_period == "MONTHLY") / n(), 2), 
+              hourly_pct = round(sum(pay_period == "HOURLY") / n(), 2), 
+              fulltime_pct = round(sum(work_type == "FULL_TIME") / n(), 2), 
+              parttime_pct = round(sum(work_type == "PART_TIME") / n(), 2), 
+              entry_pct = round(sum(experience == "Entry Level") / n(), 2),
+              assoc_pct = round(sum(experience == "Associate") / n(), 2),
+              mid_pct = round(sum(experience == "Mid-Senior level") / n(), 2), 
+              director_pct = round(sum(experience == "Director") / n(), 2),
+              exec_pct = round(sum(experience == "Executive") / n(), 2),
+              intern_pct = round(sum(experience == "Internship") / n(), 2))
+
+companies <- read_csv("archive/company_details/companies.csv", 
+                     show_col_types = FALSE)
+colnames(companies) <- prepend_unless(colnames(companies), "company")
+
+industries <- read_csv("archive/company_details/company_industries.csv", 
+                     show_col_types = FALSE)
+industries <- distinct(industries)
+
+employee_counts <- read_csv("archive/company_details/employee_counts.csv", 
+                     show_col_types = FALSE)
+# compress 'employee_counts' into company on the rows
+employee_counts <- employee_counts %>%
+    group_by(company_id) %>%
+    summarise(employees = mean(employee_count), 
+              followers = mean(follower_count))
+
+# attach compressed dataframes to "companies"
+companies <- merge(companies, employee_counts, by = "company_id")
+companies <- merge(companies, industries, by = "company_id")
+companies <- merge(companies, linkedin, by = "company_id")
+
+save(companies, "data.rda")
+```
+
