@@ -1,0 +1,37 @@
+---
+title: "employment_graph"
+author: "Sophia Gan"
+date: "2023-10-06"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+```
+
+```{r}
+linkedin$avg_salary <- (linkedin$max_salary + linkedin$min_salary) / 2
+newdf <- as.data.frame(table(linkedin$company_id))
+names(newdf)[2] <- ("no_job_posting")
+names(newdf)[1] <- ("company_id")
+newdf <- newdf[order(newdf$company_id), ]
+result <- linkedin %>%
+  group_by(company_id) %>%
+    summarize(avg_salary = mean(avg_salary), company_size = unique(company_size), 
+              work_type = stringr::str_c(unique(work_type), collapse=", "))
+result$no_job_posting = newdf$no_job_posting
+
+ggplot(result, aes(x = company_id, y = avg_salary, color = company_size)) + 
+  geom_point(size = 1) +
+  facet_grid(. ~ company_size) +
+  labs(title = "Companies' with Average Salary and Company Size Data")
+
+```
+
