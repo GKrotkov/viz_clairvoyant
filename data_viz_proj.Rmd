@@ -17,7 +17,7 @@ library(stringr)
 ```
 
 Abstract 
-We aim to identify and understand the potential anchor clients within various industry sectors in the United States. By getting to the result, we use data-driven strategies to identify sectors currently hiring, assess the health of these sectors using stock market data from Yahoo Finance and LinkedIn data listed over the course of 2 days from Kaggle. We find that the company HoneyWell has a comparatively high hiring need while maintaining a healthy and reputable reputation in its sector. With the company’s long history, diverse industry sector, and its high rank in hiring needs, this company is being decided as the anchor client for clAIrvoyant.
+We aim to identify and understand the potential anchor clients within various industry sectors in the United States. By getting to the result, we use data-driven strategies to identify sectors currently hiring, assess the health of these sectors using stock market data from Yahoo Finance and LinkedIn data listed over the course of 2 days from Kaggle. We find that the company HoneyWell, which was founded in 1906, has a comparatively high hiring need while maintaining a healthy and reputable reputation in its sector. With the company’s long history, diverse industry sector, and its high rank in hiring needs, this company is being decided as the anchor client for clAIrvoyant.
 
 Introduction
 
