@@ -1,0 +1,68 @@
+---
+title: "Data_viz_proj"
+author: "Sophia Gan"
+date: "2023-10-12"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+```
+
+Abstract 
+We aim to identify and understand the potential anchor clients within various industry sectors in the United States. By getting to the result, we use data-driven strategies to identify sectors currently hiring, assess the health of these sectors using stock market data from Yahoo Finance and LinkedIn data listed over the course of 2 days from Kaggle. We find that the company HoneyWell has a comparatively high hiring need while maintaining a healthy and reputable reputation in its sector. With the company’s long history, diverse industry sector, and its high rank in hiring needs, this company is being decided as the anchor client for clAIrvoyant.
+
+Introduction
+
+As a start-up company, clAIrvoyant is a company that has the product for matching resumes for the company to each white collar job. The goal is to target anchor clients in various industries in order to reach a better price in the future for market value. In order to decide which sector to focus on, understanding the market’s needs and future trends will be important for this process so that we can develop further strategies for the company. By targeting the company HoneyWell, it will help increase clAIrvoyant’s book of business. We will be explaining the reasons for choosing this company, the future trend and opportunities based on the data we have. 
+
+In this study, we use data collected on LinkedIn in the year 2023, with over 15,000+ job postings listed over the course of 2 days and stock price data from Yahoo Finance. By analyzing data collected, this study will seek which company will be the best fit for deploying the company to clAIrvoyant. In addition to answer the central question, we will also be focusing on these questions:
+What sectors are healthy?
+Who is the leader for the sector we have looked for?
+Who do we know has immediate hiring needs?
+
+
+EDA
+Our study relies on data sourced from LinkedIn's job postings and stock market figures extracted from Yahoo Finance. Within the job postings dataset, entries were organized in descending order, prioritizing companies based on their volume of job listings. This rearrangement revealed the distribution of postings among the top 200 companies accessible in our dataset. As illustrated in Figure 1, a majority of these entities have between 0 - 40 job openings. This pattern suggests a muted hiring demand for many, leading our analysis to pivot towards companies exhibiting a more robust hiring inclination.
+```{r, echo = FALSE}
+posting <- companies[order(companies$n_postings, decreasing = TRUE), ]
+ggplot(data = head(posting, 200), aes(x = n_postings, color = company_size)) +
+  geom_histogram(bins = 50, fill = "lightblue", color = "black") + 
+  xlab("number of postings") +
+  ylab("frequency") +
+  ggtitle("Companies' job postings") +
+  geom_vline(xintercept = 46, color = "red") + 
+  annotate("text", x = 42, y = 20, label="HoneyWell", angle = 90) + 
+  theme_bw()
+```
+
+Delving deeper into entities with substantial job postings, we crafted a scatter plot (Figure 2) to correlate job posting volumes with company size. This size metric also informed our criteria for selecting an anchor client. Generally, a company with a more significant footprint is expected to have more extensive hiring demands than its smaller counterparts. Within this context, Honeywell stands out. It not only ranks among the top 20 in job postings but also boasts a size rating of 7, the pinnacle in our dataset. Factoring in hiring proportions, Honeywell's hiring trends strike a balance. In relation to peers of comparable stature, their hiring tempo seems measured, indicating a moderate yet significant volume of listings. An amalgamation of insights from Figures 1 and 2 positions Honeywell in an intermediate bracket. They surpass the prevalent 0 - 40 job listing range but don't overshadow entities with the most extensive listings.
+```{r, echo = FALSE}
+posting <- companies[order(companies$n_postings, decreasing = TRUE), ]
+ggplot(data = head(posting, 20), aes(x = company_name, y = n_postings, color = company_size)) +
+  geom_point(size = 2) +
+  xlab("company name") +
+  ylab("number of postings") +
+  ggtitle("Companies' job postings") +
+  coord_flip() +
+  theme_bw()
+```
+
+Narrowing our focus to the top 20 job-listing companies, we introduced a stacked bar chart (Figure 3) elucidating the work-type distribution for each. Here, the y-axis enumerates company names while the x-axis quantifies their respective work type percentages. Notably, a vast majority lean heavily towards full-time roles, a trend underscored by predominant dark blue segments, some even maxing out at 100%. When juxtaposing insights from Figures 2 and 3, Honeywell emerges as an entity with a pronounced full-time hiring thrust for white-collar roles, complemented by a substantial organizational size. This synergy makes Honeywell an optimal candidate for an anchor client consideration.
+```{r, echo = FALSE}
+ggplot(data = head(posting, 20)) +
+  geom_bar(aes(x = company_name, y = fulltime_pct, fill = "Full-time"), stat = "identity") +
+  geom_bar(aes(x = company_name, y = parttime_pct, fill = "Part-time"), stat = "identity") +
+  labs(y = "Percentage of work type", x = "Company names") +
+  scale_fill_manual(name = "Work Type", values = c("Full-time" = "blue", "Part-time" = "darkturquoise")) +
+  theme_bw() +
+  coord_flip() +
+  ggtitle("Percentage of Work Type in Each Company")
+```
