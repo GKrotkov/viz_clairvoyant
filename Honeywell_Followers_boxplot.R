@@ -7,10 +7,24 @@ companies %>%
   #geom_violin() +
   geom_boxplot(aes(x = "")) +
   geom_hline(yintercept = 14.75, color = "red") +
-  annotate("text", x = 1.2, y = 14, label="Honeywell", angle = 90) +
+  annotate("text", x = 1.2, y = 14.5, label="Honeywell", angle = 90) +
   coord_flip() +
   labs(x = "",
        y = "Log Linkedin Followers",
        title = "Number of Linkedin Followers for Honeywell") +
   theme_bw()
   #facet_wrap(~ industry)
+
+
+# Salary Boxplot, replacing followers
+companies %>%
+  ggplot(aes(y = log(mean_salary_min))) +
+  #geom_violin() +
+  geom_boxplot(aes(x = "")) +
+  geom_hline(yintercept = 14.75, color = "red") +
+  annotate("text", x = 1.2, y = 14.5, label="Honeywell", angle = 90) +
+  coord_flip() +
+  labs(x = "",
+       y = "Log Linkedin Followers",
+       title = "Number of Linkedin Followers for Honeywell") +
+  theme_bw()
