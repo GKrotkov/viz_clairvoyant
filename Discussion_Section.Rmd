@@ -1,0 +1,28 @@
+---
+title: "Clairvoyant Discussion Section"
+author: "Devin Basley"
+date: "2023-10-12"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Discussion
+
+In this paper, we explored the Linkedin job postings to discover a fortune 500 company that can utilize Clairvoyant to improve their talent acquisition. We were able to focus in on Honeywell as a potential anchor client by using data visualization approaches and methods. We relied on Linkedin job posting data as well as yahoo finance stock data between 2015 and 2023. 
+
+Through our principal component analysis, we were able to key on variables that related to high correlations to each other. This principal component analysis was able to center our focus on large companies that had many full time position postings as well as a large following base.
+
+In this work, our use of the stock market data was able to determine the strength and stability of our company. Through the yearly trends, we were able to see how well Honeywell could recover from a stock market crash such as the Covid-19 crash in 2020. Honeywell's ability to recover from the 2020 stock market crash and move back to stock prices from before the pandemic displays a strong, stable and growing company. Honeywell is also a company that has existed for over 100 years and has continuously grown, innovated, and expanded. This longevity is an impressive track record of sustainability and stability.
+
+In our analysis, we saw that Honeywell has 100% full time job postings. This is a good indicator that they focus mainly on hiring white collar workers. This high percentage of full time job postings led us to believe that they continually look to fill positions for white collar jobs.
+
+Finally, we believe that our findings led us to a strong anchor company, in Honeywell, for our product. This is a beneficial partnership for both Clairvoyant and Honeywell as it provides an opportunity for us to grow our business and Honeywell to improve their talent acquisition ability.
+
+
+
+
+
