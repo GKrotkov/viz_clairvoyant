@@ -1,6 +1,6 @@
 ---
 title: "Data_viz_proj"
-author: "Sophia Gan"
+author: "Devin Basley, Gabriel Krotkov, Sophia Gan"
 date: "2023-10-12"
 output: pdf_document
 ---
