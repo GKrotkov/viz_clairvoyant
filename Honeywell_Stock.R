@@ -14,7 +14,8 @@ verizon <- tq_get(c("VZ"), get  = "stock.prices",
 apex_systems <- tq_get(c("ASGN"), get  = "stock.prices",
                        from = "2015-01-01", to = "2023-10-01")
 
-
+oracle <- tq_get(c("ORCL"), get  = "stock.prices",
+                 from = "2015-01-01", to = "2023-10-01")
 
 ggplot(honeywell, aes(x = date, y = close)) +
   geom_line(alpha = 0.5) +
