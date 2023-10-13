@@ -4,7 +4,7 @@ This report is designed to advocate for a specific company as an ideal anchor cl
 
 
 Key Files | Description
-------------------------
+-----------| -------------
 report.rmd | Final report
 archive/   | Directory with Linkedin dataset
 design_docs/ | Documents giving our design thoughts and prompting guidance
