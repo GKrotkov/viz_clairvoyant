@@ -9,6 +9,7 @@
 
 library(shiny)
 library(tidyverse)
+library(scales)
 
 load("data.rda")
 
@@ -24,14 +25,17 @@ function(input, output, session) {
     })
     
     output$salary_plot <- renderPlot({
-        
+        h_id <- which(companies$company_id == 1344)
         ggplot(data(), aes(x = mean_salary_min)) + 
             geom_histogram(bins = input$bins, 
-                           fill = "lightblue", color = "black") + 
+                           fill = "deepskyblue1", color = "black") + 
+            geom_vline(xintercept = 106918.2, # hardcoded Honeywell value
+                       color = "red") + 
             theme_bw() + 
             labs(title = "Distribution of Average Minimum Salary", 
-                 x = "Avg. Max Salary", y = "Frequency")
-        
+                 subtitle = "Honeywell in red",
+                 x = "Avg. Max Salary (dollars)", y = "Frequency") + 
+            scale_x_continuous(labels = label_dollar())
     })
 
 }

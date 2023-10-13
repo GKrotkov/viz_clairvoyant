@@ -1,0 +1,10 @@
+name: salary_interactive
+title:
+username: gkrotkov
+account: gkrotkov
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10116464
+bundleId: 7773189
+url: https://gkrotkov.shinyapps.io/salary_interactive/
+version: 1
